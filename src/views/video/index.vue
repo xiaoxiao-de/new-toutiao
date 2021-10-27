@@ -1,14 +1,12 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <div class="video-container">视频</div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'Video'
 }
 </script>
-
 <style lang="less">
+
 </style>

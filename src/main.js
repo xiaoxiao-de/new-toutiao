@@ -5,6 +5,15 @@ import store from './store'
 
 // 加载全局样式
 import './style/index.less'
+// 导入vant组件
+import Vant from 'vant'
+// vant样式
+import 'vant/lib/index.css'
+// 加载rem基准值
+
+import 'amfe-flexible'
+// 挂载vant组件
+Vue.use(Vant)
 
 Vue.config.productionTip = false
 

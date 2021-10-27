@@ -1,14 +1,12 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <div class="qq-container">问答</div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'QQ'
 }
 </script>
-
 <style lang="less">
+
 </style>
