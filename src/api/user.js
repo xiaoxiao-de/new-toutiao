@@ -28,3 +28,12 @@ export const getUser = () => {
     // }
   })
 }
+
+// 用户频道列表
+export const getUserList = () => {
+  return request({
+    method: 'GET',
+    url: '/v1_0/user/channels'
+
+  })
+}

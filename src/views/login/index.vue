@@ -18,7 +18,7 @@
       </van-field>
       <van-field
       v-model="user.code"
-      type="password"
+      type="number"
       name="code"
       placeholder="请输入验证码"
       :rules="userFormRules.code"
@@ -33,7 +33,9 @@
       </template>
       </van-field>
       <div class="login-btn">
-      <van-button class="login-btn-col" block type="info" native-type="submit">登录</van-button>
+      <van-button class="login-btn-col" block type="info" native-type="submit">
+        登录
+      </van-button>
       </div>
     </van-form>
   </div>
@@ -77,20 +79,24 @@ export default {
       const user = this.user
       // 表单验证 通过this.$toast 调用vant 组件 轻吐司提示
       this.$toast.loading({
-        message: '加载中...',
+        message: '登录中...',
         forbidClick: true, // 禁用背景点击
         duration: 0 // 持续时间默认2秒 如果为0 则持续提示
       })
       // 提交表单请求登入
       try {
         const { data } = await login(user)
-        console.log(data)
+        // console.log(data)
         this.$store.commit('setUser', data.data)
         this.$toast.success('登录成功')
         this.$router.back()
       } catch (err) {
-        console.log('登录失败', err)
-        this.$toast.fail('登录失败')
+        // console.log('登录失败', err)
+        if (err.response.status === 400) {
+          this.$toast.fail('手机号码或验证码错误')
+        } else {
+          this.$toast.fail('登录失败', err)
+        }
       }
       // 根据请求响应结果处理后续操作
       // console.log(values)
@@ -101,7 +107,7 @@ export default {
       try {
         await this.$refs.loginRef.validate('mobile')
       } catch (err) {
-        return console.log('验证失败', err)
+        return this.$toast.fail('验证失败', err)
       }
 
       // 验证通过,显示倒计时

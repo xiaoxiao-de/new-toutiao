@@ -10,8 +10,8 @@ import Vant from 'vant'
 // vant样式
 import 'vant/lib/index.css'
 // 加载rem基准值
-
 import 'amfe-flexible'
+import '@/utils/dayjs'
 // 挂载vant组件
 Vue.use(Vant)
 

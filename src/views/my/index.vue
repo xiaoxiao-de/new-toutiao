@@ -62,6 +62,7 @@
 </template>
 
 <script>
+// 从store中获得token进行登录判断
 import { mapState } from 'vuex'
 import { getUser } from '@/api/user'
 export default {
@@ -72,6 +73,7 @@ export default {
     }
   },
   computed: {
+    // 用户token
     ...mapState(['user'])
   },
   created () {

@@ -1,31 +1,70 @@
 <template>
   <div class="home-container">
-    <!-- 导航栏 -->
-    <van-nav-bar>
-       <van-button class="search-btn" slot="title" type="info" size="small" round icon="search">
+    <!-- 搜索导航栏 -->
+    <van-nav-bar fixed>
+       <van-button class="search-btn" slot="title" type="info" size="small"
+       round icon="search" to="/search">
          搜索</van-button>
     </van-nav-bar>
-    <!-- 列表 -->
-  <van-tabs class="tabs" v-model="active" animated swipeable>
-    <van-tab title="标签 1">内容 1</van-tab>
-    <van-tab title="标签 2">内容 2</van-tab>
-    <van-tab title="标签 3">内容 3</van-tab>
-    <van-tab title="标签 4">内容 4</van-tab>
-    <van-tab title="标签 4">内容 4</van-tab>
-    <van-tab title="标签 4">内容 4</van-tab>
-    <van-tab title="标签 4">内容 4</van-tab>
-    <van-tab title="标签 4">内容 4</van-tab>
+    <!-- 频道列表 -->
+  <van-tabs class="tabs" v-model="active"  animated swipeable>
+    <van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
+      <!-- 文章列表 -->
+     <articleList :channel="item" />
+     </van-tab>
+   <div slot="nav-right" class="placeholder"></div>
+   <div slot="nav-right" class="btn" @click="show = true">
+        <i class="iconfont icon-gengduo"></i>
+   </div>
   </van-tabs>
+  <!-- 弹出层 -->
+  <van-popup
+    v-model="show"
+    closeable
+    position="bottom"
+    :style="{ height: '100%' }"
+  >
+  <Channel :mychannels = 'channelsList' :active = 'active' @updata-active='onUpdata'></Channel>
+  </van-popup>
   </div>
 </template>
 
 <script>
+import { getUserList } from '@/api/user'
+import articleList from './components/article'
+import Channel from '@/components/Channel/index'
+
 export default {
   name: 'Home',
   data () {
     return {
-      active: 0
+      active: 0,
+      channelsList: [], // 频道列表
+      show: false // 控制弹出层
     }
+  },
+  created () {
+    this.loadUserList()
+  },
+  methods: {
+    async loadUserList () {
+      try {
+        const { data } = await getUserList()
+        this.channelsList = data.data.channels
+        console.log(this.channelsList)
+      } catch (err) {
+        this.$toast('获取数据失败', err)
+      }
+    },
+    onUpdata (index, show = true) {
+      // console.log(index)
+      this.active = index
+      this.show = show
+    }
+  },
+  components: {
+    articleList,
+    Channel
   }
 }
 </script>
@@ -37,6 +76,8 @@ export default {
   }
 }
 .home-container {
+  padding-top: 174px;
+  padding-bottom: 100px;
   .van-nav-bar__title{
     max-width: unset;
   }
@@ -51,12 +92,16 @@ export default {
     }
   }
   .tabs {
-    .van-tabs_wrap {
+   .van-tabs__wrap {
+      position: fixed;
+      top: 92px;
+      z-index: 1;
+      left: 0;
+      right: 0;
       height: 82px;
     }
     .van-tab {
-      width: 200px;
-      height: 82px;
+      min-width: 200px;
       border-right: 1px solid #edeff3;
       font-size: 30px;
       color: #777;
@@ -72,6 +117,23 @@ export default {
     }
     .van-tabs__nav {
       padding-bottom: 0;
+    }
+    .placeholder {
+      flex-shrink: 0;
+      width: 66px;
+      height: 82px;
+    }
+    .btn {
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      right: 0;
+      width: 66px;
+      height: 82px;
+      i {
+        font-size: 43px;
+      }
     }
   }
 }
