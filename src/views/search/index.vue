@@ -14,9 +14,11 @@
     </form>
     <!-- 搜索历史记录 -->
       <!-- 搜索结果 -->
-    <Search03 v-if="isShow"></Search03>
+    <Search03 v-if="isShow" :searchText="searchText"></Search03>
     <!-- 搜索建议 -->
-    <Search02 v-else-if="searchText"></Search02>
+    <Search02 v-else-if="searchText"
+    :searchText = "searchText"
+    @search="onSearch"></Search02>
     <!-- 搜索历史 -->
     <Search01 v-else></Search01>
   </div>
@@ -34,8 +36,11 @@ export default {
       isShow: false // 展示列表
     }
   },
+  watch: {
+  },
   methods: {
     onSearch (val) {
+      this.searchText = val
       this.isShow = true
     },
     onCancel () {

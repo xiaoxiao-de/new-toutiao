@@ -17,7 +17,9 @@ const routes = [
       { path: '/my', name: 'my', component: () => import('@/views/my') }
     ]
   },
-  { path: '/search', name: 'search', component: () => import('@/views/search/index') }
+  { path: '/search', name: 'search', component: () => import('@/views/search/index') },
+  // 开启props参数 就是把路由参数映射到props中
+  { path: '/articles/:articleId', name: 'articles', component: () => import('@/views/article/index'), props: true }
 ]
 
 const router = new VueRouter({
